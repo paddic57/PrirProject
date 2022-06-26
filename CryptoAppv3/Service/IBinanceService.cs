@@ -10,6 +10,6 @@ namespace CryptoAppv3.Service
 {
     public interface IBinanceService
     {
-        Task<ChartDataBinance> getChartData(string symbol = "BTCUSDT", int limit = 100);
+        Task<ChartDataBinance> getChartData(string symbol = "BTCUSDT", string limit = "20");
     }
 }

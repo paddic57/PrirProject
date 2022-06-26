@@ -9,29 +9,19 @@
              d:DesignHeight="600" d:DesignWidth="1200">
 
     <Grid>
-        <lvc:CartesianChart Margin="10,10,727,269">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding asksChartValuesSeries}"/>
-            </lvc:CartesianChart.Series>
+        <lvc:CartesianChart LegendLocation ="Right" Margin="10,10,727,269" Series="{Binding asksChartValuesSeries}">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding asksLabel}"/>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
-        <lvc:CartesianChart Margin="30,336,714,52" RenderTransformOrigin="0.5,0.5">
-            <lvc:CartesianChart.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="-1" ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </lvc:CartesianChart.RenderTransform>
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding bidsChartValuesSeries}"/>
-            </lvc:CartesianChart.Series>
+        <lvc:CartesianChart Margin="584,10,153,269" RenderTransformOrigin="0.5,0.5" Series="{Binding bidsChartValuesSeries}">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding bidsLabel}"/>
             </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
+        <Button Command ="{Binding RefreshCommand}" Content="Button" HorizontalAlignment="Left" Margin="600,350,0,0" VerticalAlignment="Top" Height="69" Width="119"/>
     </Grid>
 </UserControl>
