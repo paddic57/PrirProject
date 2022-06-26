@@ -4,6 +4,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ using System.Windows.Media;
 
 namespace CryptoAppv3.ViewModel
 {
-    public class OrderBookChartViewModel
+    public class OrderBookChartViewModel : INotifyPropertyChanged
     {
         private readonly IBinanceService binanceService;
 
@@ -23,14 +24,35 @@ namespace CryptoAppv3.ViewModel
         public List<string> bidsLabel { get; set; }
         public List<string> asksLabel { get; set; }
         public Func<double, string> YFormatter { get; set; }
-        public string stringTitle { get; set; }
+
+        public List<string> cbxSymbolsList { get; set; }
+
+        private string _cbxSelectedSymbol;
+
+        public string cbxSelectedSymbol
+        {
+            get
+            {
+                return _cbxSelectedSymbol;
+            }
+            set {
+                if (_cbxSelectedSymbol == value)
+                    return;
+                _cbxSelectedSymbol = value;
+                OnPropertyChanged("cbxSelectedSymbol");
+            }
+        }
 
         public ICommand RefreshCommand { get; }
+        public ICommand LiveSearchCommand { get; }
+
+        public int step { get; set; }
 
         public OrderBookChartViewModel(IBinanceService binanceService)
         {
             this.binanceService = binanceService;
             RefreshCommand = new RefreshCommand(this);
+            LiveSearchCommand = new LiveSearchCommand(this);
             asksChartValuesSeries = new SeriesCollection();
             bidsChartValuesSeries = new SeriesCollection();
         }
@@ -43,15 +65,14 @@ namespace CryptoAppv3.ViewModel
         }
         public async Task Load()
         {
+            cbxSymbolsList = new List<string> { "BTCUSDT", "BTCUSDC", "TRXUSDT", "DOGEBTC" };
             ChartDataBinance chartData = await binanceService.getChartData();
-            YFormatter = value => value.ToString("0.00");
-
             addDataToSeries(chartData);
         }
 
         public async Task Refresh()
         {
-            ChartDataBinance chartData = await binanceService.getChartData();
+            ChartDataBinance chartData = await binanceService.getChartData(cbxSelectedSymbol);
 
             asksChartValuesSeries.RemoveAt(0);
             bidsChartValuesSeries.RemoveAt(0);
@@ -63,6 +84,11 @@ namespace CryptoAppv3.ViewModel
         }
         public void addDataToSeries(ChartDataBinance chartData)
         {
+            step = chartData.asksPrices.Count / 4 - 1;
+            bidsLabel = new List<string>(chartData.bidsPrices);
+            asksLabel = new List<string>(chartData.asksPrices);
+            OnPropertyChanged("bidsLabel");
+            OnPropertyChanged("asksLabel");
             asksChartValuesSeries.Add(new LineSeries
             {
                 Values = new ChartValues<double>(chartData.asksQuantity),
@@ -78,8 +104,13 @@ namespace CryptoAppv3.ViewModel
                 Fill = Brushes.Green,
                 Stroke = Brushes.Green,
             });
-            bidsLabel = chartData.bidsPrices;
-            asksLabel = chartData.asksPrices;
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

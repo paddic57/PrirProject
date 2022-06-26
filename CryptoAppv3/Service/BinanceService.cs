@@ -12,7 +12,7 @@ namespace CryptoAppv3.Service
 {
     public class BinanceService : IBinanceService
     {
-        public async Task<ChartDataBinance> getChartData(string symbol = "BTCUSDT", string limit = "20")
+        public async Task<ChartDataBinance> getChartData(string symbol, string limit)
         {
             Uri uri = new Uri("https://www.binance.com/api/v3/depth?symbol=" + symbol + "&limit=" + limit);
             WebClient client = new WebClient();
@@ -21,17 +21,22 @@ namespace CryptoAppv3.Service
 
             NumberFormatInfo provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ".";
+
+            double acumulateBids = 0.0;
+            double acumulateAsks = 0.0;
             foreach (var stringList in data.asks)
             {
                 data.asksPrices.Add(System.Convert.ToDouble(stringList[0], provider).ToString("C", new CultureInfo("en-US")));
-                data.asksQuantity.Add(Math.Round(System.Convert.ToDouble(stringList[1], provider), 2));
+                acumulateAsks += System.Convert.ToDouble(stringList[1], provider);
+                data.asksQuantity.Add(Math.Round(acumulateAsks, 2));
             }
             foreach (var stringList in data.bids)
             {
                 data.bidsPrices.Add(System.Convert.ToDouble(stringList[0], provider).ToString("C", new CultureInfo("en-US")));
-                data.bidsQuantity.Add(Math.Round(System.Convert.ToDouble(stringList[1], provider),2 ));
+                acumulateBids += System.Convert.ToDouble(stringList[1], provider);
+                data.bidsQuantity.Add(Math.Round(acumulateBids, 2 ));
             }
-
+           
             return data;
         }
     }

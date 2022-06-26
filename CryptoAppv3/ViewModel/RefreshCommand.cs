@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Threading;
 
 namespace CryptoAppv3.ViewModel
 {
-    public abstract class RefreshCommandBase : ICommand
+    public abstract class CommandBase : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         
@@ -32,7 +33,7 @@ namespace CryptoAppv3.ViewModel
             CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
-    public class RefreshCommand: RefreshCommandBase
+    public class RefreshCommand: CommandBase
     {
         private readonly OrderBookChartViewModel orderBookChartViewModel;
         public RefreshCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
@@ -41,11 +42,20 @@ namespace CryptoAppv3.ViewModel
         }
         protected override async Task ExecuteAsync(object? parameter)
         {
-            while (true)
-            {
+            await orderBookChartViewModel.Refresh();
+        }
+    }
+    public class LiveSearchCommand : CommandBase
+    {
+        private readonly OrderBookChartViewModel orderBookChartViewModel;
+        public LiveSearchCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
+        {
+            this.orderBookChartViewModel = orderBookChartViewModel;
+        }
+        protected override async Task ExecuteAsync(object? parameter)
+        {  
+            while(true)
                 await orderBookChartViewModel.Refresh();
-                
-            }
         }
     }
 
