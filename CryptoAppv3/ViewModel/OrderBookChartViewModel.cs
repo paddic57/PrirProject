@@ -67,6 +67,7 @@ namespace CryptoAppv3.ViewModel
 
         public OrderBookChartViewModel(IBinanceService binanceService)
         {
+            timer = 2;
             this.binanceService = binanceService;
             RefreshCommand = new RefreshCommand(this);
             LiveSearchCommand = new LiveSearchCommand(this);
@@ -82,6 +83,7 @@ namespace CryptoAppv3.ViewModel
         }
         public async Task Load()
         {
+          
             refreshTime = new List<int> { 2, 4, 5, 6, 8, 9, 10, 30, 60 };
             cbxSymbolsList = new List<string> { "BTCUSDT", "BTCUSDC", "TRXUSDT", "DOGEBTC" };
             ChartDataBinance chartData = await binanceService.getChartData();
@@ -89,7 +91,8 @@ namespace CryptoAppv3.ViewModel
         }
         public static async Task Delay()
         {
-            await Task.Delay(timer);
+          
+            await Task.Delay(5000);
         }
         public async Task Refresh()
         {
