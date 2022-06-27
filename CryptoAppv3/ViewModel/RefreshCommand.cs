@@ -1,25 +1,20 @@
-﻿using CryptoAppv3.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Threading;
 
 namespace CryptoAppv3.ViewModel
 {
     public abstract class CommandBase : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        
+
 
         public bool CanExecute(object? parameter)
         {
             return true;
         }
 
-        
+
         public async void Execute(object? parameter)
         {
             await ExecuteAsync(parameter);
@@ -33,7 +28,7 @@ namespace CryptoAppv3.ViewModel
             CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
-    public class RefreshCommand: CommandBase
+    public class RefreshCommand : CommandBase
     {
         private readonly OrderBookChartViewModel orderBookChartViewModel;
         public RefreshCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
@@ -52,10 +47,13 @@ namespace CryptoAppv3.ViewModel
         {
             this.orderBookChartViewModel = orderBookChartViewModel;
         }
+
         protected override async Task ExecuteAsync(object? parameter)
-        {  
-            while(true)
+        {
+            while (true)
+            {
                 await orderBookChartViewModel.Refresh();
+            }
         }
     }
 

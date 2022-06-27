@@ -36,6 +36,7 @@
         <Button  Command ="{Binding RefreshCommand}" Content="Refresh" HorizontalAlignment="Left" Margin="600,350,0,0" VerticalAlignment="Top" Height="69" Width="119"/>
         <ComboBox ItemsSource = "{Binding cbxSymbolsList}" SelectedItem = "{Binding cbxSelectedSymbol, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "450,350,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height = "69" Width = "119" SelectedIndex="0" />
         <Button Command ="{Binding LiveSearchCommand}" Content="Start" Margin = "750,350,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="69" Width="119"/>
+        <ComboBox ItemsSource = "{Binding refreshTime}" SelectedItem = "{Binding refreshTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "300,350,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height = "69" Width = "119" SelectedIndex="0"  />
 
     </Grid>
 </UserControl>

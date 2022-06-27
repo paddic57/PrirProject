@@ -1,10 +1,7 @@
 ﻿using CryptoAppv3.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -34,9 +31,9 @@ namespace CryptoAppv3.Service
             {
                 data.bidsPrices.Add(System.Convert.ToDouble(stringList[0], provider).ToString("C", new CultureInfo("en-US")));
                 acumulateBids += System.Convert.ToDouble(stringList[1], provider);
-                data.bidsQuantity.Add(Math.Round(acumulateBids, 2 ));
+                data.bidsQuantity.Add(Math.Round(acumulateBids, 2));
             }
-           
+
             return data;
         }
     }

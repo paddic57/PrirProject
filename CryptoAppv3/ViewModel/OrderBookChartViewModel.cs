@@ -5,8 +5,6 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -26,6 +24,9 @@ namespace CryptoAppv3.ViewModel
         public Func<double, string> YFormatter { get; set; }
 
         public List<string> cbxSymbolsList { get; set; }
+        public List<int> refreshTime { get; set; }
+
+        public static int timer { get; set; }
 
         private string _cbxSelectedSymbol;
 
@@ -35,12 +36,28 @@ namespace CryptoAppv3.ViewModel
             {
                 return _cbxSelectedSymbol;
             }
-            set {
+            set
+            {
                 if (_cbxSelectedSymbol == value)
                     return;
                 _cbxSelectedSymbol = value;
                 OnPropertyChanged("cbxSelectedSymbol");
             }
+        }
+        public int settimer
+        {
+            get
+            {
+                return timer;
+            }
+            set
+            {
+                if (timer == value)
+                    return;
+                timer = value;
+                OnPropertyChanged("refreshTime");
+            }
+
         }
 
         public ICommand RefreshCommand { get; }
@@ -60,26 +77,31 @@ namespace CryptoAppv3.ViewModel
         public static OrderBookChartViewModel LoadViewModel(IBinanceService binanceService, Action<Task> onLoaded = null)
         {
             OrderBookChartViewModel orderBookChartViewModel = new OrderBookChartViewModel(binanceService);
-            orderBookChartViewModel.Load().ContinueWith( x => onLoaded?.Invoke(x));
+            orderBookChartViewModel.Load().ContinueWith(x => onLoaded?.Invoke(x));
             return orderBookChartViewModel;
         }
         public async Task Load()
         {
+            refreshTime = new List<int> { 2, 4, 5, 6, 8, 9, 10, 30, 60 };
             cbxSymbolsList = new List<string> { "BTCUSDT", "BTCUSDC", "TRXUSDT", "DOGEBTC" };
             ChartDataBinance chartData = await binanceService.getChartData();
             addDataToSeries(chartData);
         }
-
+        public static async Task Delay()
+        {
+            await Task.Delay(timer);
+        }
         public async Task Refresh()
         {
+            await Delay();
             ChartDataBinance chartData = await binanceService.getChartData(cbxSelectedSymbol);
 
             asksChartValuesSeries.RemoveAt(0);
             bidsChartValuesSeries.RemoveAt(0);
 
             addDataToSeries(chartData);
-            
-            
+
+
 
         }
         public void addDataToSeries(ChartDataBinance chartData)
@@ -112,5 +134,8 @@ namespace CryptoAppv3.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+
     }
 }

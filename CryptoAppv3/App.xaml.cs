@@ -1,11 +1,4 @@
-﻿using CryptoAppv3.Service;
-using CryptoAppv3.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CryptoAppv3.ViewModel;
 using System.Windows;
 
 namespace CryptoAppv3
