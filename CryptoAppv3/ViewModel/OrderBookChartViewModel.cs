@@ -91,8 +91,8 @@ namespace CryptoAppv3.ViewModel
         }
         public static async Task Delay()
         {
-          
-            await Task.Delay(5000);
+
+            await Task.Delay(timer*1000);
         }
         public async Task Refresh()
         {
