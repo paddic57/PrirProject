@@ -11,7 +11,5 @@ namespace CryptoAppv3.Views
         {
             InitializeComponent();
         }
-
-
     }
 }

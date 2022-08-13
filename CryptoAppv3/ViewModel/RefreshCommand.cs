@@ -40,20 +40,42 @@ namespace CryptoAppv3.ViewModel
             await orderBookChartViewModel.Refresh();
         }
     }
-    public class LiveSearchCommand : CommandBase
+    public class LiveSearchStartCommand : CommandBase
     {
         private readonly OrderBookChartViewModel orderBookChartViewModel;
-        public LiveSearchCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
+        public LiveSearchStartCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
         {
             this.orderBookChartViewModel = orderBookChartViewModel;
         }
 
         protected override async Task ExecuteAsync(object? parameter)
         {
-            while (true)
+            orderBookChartViewModel.btnRefreshEnabled = false;
+            orderBookChartViewModel.btnStopEnabled = true;
+            orderBookChartViewModel.btnStartEnabled = false;
+
+            orderBookChartViewModel.liveSearch = true;
+            while (orderBookChartViewModel.liveSearch)
             {
-                await orderBookChartViewModel.Refresh();
+                await orderBookChartViewModel.RefreshLiveSearch();
             }
+        }
+    }
+    public class LiveSearchStopCommand : CommandBase
+    {
+        private readonly OrderBookChartViewModel orderBookChartViewModel;
+        public LiveSearchStopCommand(OrderBookChartViewModel orderBookChartViewModel, Action<Task> onLoaded = null)
+        {
+            this.orderBookChartViewModel = orderBookChartViewModel;
+        }
+
+        protected override async Task ExecuteAsync(object? parameter)
+        {
+            orderBookChartViewModel.btnRefreshEnabled = true;
+            orderBookChartViewModel.btnStopEnabled = false;
+            orderBookChartViewModel.btnStartEnabled = true;
+
+            orderBookChartViewModel.liveSearch = false;
         }
     }
 

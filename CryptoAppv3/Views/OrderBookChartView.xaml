@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:CryptoAppv3.Views"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1200">
+             d:DesignHeight="700" d:DesignWidth="1200">
 
-    <Grid>
-        <lvc:CartesianChart DisableAnimations="True" Margin="50,10,650,269" Series="{Binding asksChartValuesSeries}">
+    <Grid Margin="0,0,0,10">
+        <lvc:CartesianChart DisableAnimations="True" Margin="50,94,650,0" Series="{Binding asksChartValuesSeries}" Height="361" VerticalAlignment="Top">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding asksLabel, UpdateSourceTrigger=PropertyChanged}">
                     <lvc:Axis.Separator>
@@ -21,7 +21,7 @@
                 <lvc:Axis MinValue="0"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
-        <lvc:CartesianChart DisableAnimations="True"  Margin="650,10,50,269" RenderTransformOrigin="0.5,0.5" Series="{Binding bidsChartValuesSeries}">
+        <lvc:CartesianChart DisableAnimations="True"  Margin="600,94,100,0" RenderTransformOrigin="0.5,0.5" Series="{Binding bidsChartValuesSeries}" Height="361" VerticalAlignment="Top">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Labels="{Binding bidsLabel, UpdateSourceTrigger=PropertyChanged}">
                     <lvc:Axis.Separator>
@@ -33,11 +33,14 @@
                 <lvc:Axis MinValue="0"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
-        <Button  Command ="{Binding RefreshCommand}" Content="Refresh" HorizontalAlignment="Left" Margin="200,420,0,0" VerticalAlignment="Top" Height="50" Width="120"/>
-        <Button Command ="{Binding LiveSearchCommand}" Content="Start" Margin = "50,420,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Width="120"/>
+        <Button  Command ="{Binding RefreshCommand}" Content="Refresh" IsEnabled ="{Binding btnRefreshEnabled}" HorizontalAlignment="Left" Margin="350,481,0,0" VerticalAlignment="Top" Height="50" Width="120"/>
+        <Button Command ="{Binding LiveSearchStartCommand}" Content="Start" IsEnabled ="{Binding btnStartEnabled}" Margin = "50,551,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Width="120"/>
+        <Button Command ="{Binding LiveSearchStopCommand}" Content="Stop" IsEnabled ="{Binding btnStopEnabled}" Margin = "200,551,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Width="120"/>
 
-        <ComboBox ItemsSource = "{Binding cbxSymbolsList}" SelectedItem = "{Binding cbxSelectedSymbol, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "200,350,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height="50" Width="120" SelectedIndex="0" />
-        <ComboBox ItemsSource = "{Binding refreshTime}" SelectedItem = "{Binding settimer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "50,350,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height="50" Width="120" SelectedIndex="0"  />
+        <ComboBox ItemsSource = "{Binding cbxSymbolsList}" SelectedItem = "{Binding cbxSelectedSymbol, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "200,481,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height="50" Width="120" SelectedIndex="0" />
+        <ComboBox ItemsSource = "{Binding refreshTime}" SelectedItem = "{Binding settimer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin = "50,481,0,0" VerticalAlignment = "Top" HorizontalAlignment="Left" Height="50" Width="120" SelectedIndex="0"  />
+        <Label Content="{Binding lblCryptoName}" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" Width="1050" Height="60" FontSize="20" FontFamily="Arial"/>
+
 
     </Grid>
 </UserControl>
